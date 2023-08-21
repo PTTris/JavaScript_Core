@@ -22,3 +22,11 @@ let jsonUndefined = 'undefined';
 
     let jsObject = JSON.parse(jsonObject);
     console.log(jsonObject);
+
+    // Stringify
+    const arr = [1,2,3,4,5];
+    let jsonNewArray = JSON.stringify(arr);
+    console.log(jsonNewArray);
+
+// Promise 
+
