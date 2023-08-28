@@ -3,7 +3,7 @@
 
 //Stringify / Parse 
 
-let jsonArray = '[JS, HTML, CCS]';
+let jsonArray = '["JS", "HTML", "CSS"]';
 
 let jsonObject = '{"name":"PT","age":20}';
 
@@ -21,12 +21,11 @@ let jsonUndefined = 'undefined';
     console.log(jsArray);
 
     let jsObject = JSON.parse(jsonObject);
-    console.log(jsonObject);
+    console.log(jsObject);
 
     // Stringify
-    const arr = [1,2,3,4,5];
-    let jsonNewArray = JSON.stringify(arr);
+    const arrJS = [1,2,3,4,5];
+    let jsonNewArray = JSON.stringify(arrJS);
     console.log(jsonNewArray);
 
-// Promise 
 
