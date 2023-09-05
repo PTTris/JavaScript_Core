@@ -1,4 +1,5 @@
 // Promise
+    // Lấy API sử dụng promise 
     // Promise có 3 trạng thái:
         // 1. Pending: trạng thái mới khởi tạo promise
         // 2. Fulfilled (Resolved): trạng thái mà promise hoàn thành thành công
@@ -167,7 +168,7 @@
 
         // *** Lưu ý: Một promise bị reject thì tất cả trong phương thức Promise.all đều sẽ lỗi và trả về catch(); 
 
-    // Bài tập về mô phỏng lấy thông lấy API (user, comment) xuất ra màn hình
+    // Bài tập về mô phỏng lấy thông lấy API (user, comment) xuất ra màn hình  (này khá khó đấy)
 
     let users = [
         {
@@ -200,6 +201,56 @@
             user_id: 3,
             content: "Empty" 
         }
-    ]
+    ];
 
+    function getComments() {
+        return new Promise((resolve, reject) => {
+            setTimeout(function() {
+                resolve(comments);
+            },1000);
+        });
+    }
+
+    function getUsersByIds(userIds) {
+        return new Promise((resolve, reject) => {
+            let result = users.filter(function(user) {
+                return userIds.includes(user.id);
+            });
+            setTimeout(function() {
+                resolve(result);
+            },1000);
+        })
+    }
+
+
+    getComments()
+        .then(function(comments) {
+            let userIds = comments.map(function(comment) {
+                return comment.user_id;
+            });
+
+            return getUsersByIds(userIds)
+                .then(function(users) {
+                    return {
+                        users: users,
+                        comments: comments 
+                    }
+                })
+        })
+
+        .then(function(data) {
+            let commentBlock = document.getElementById('comment-block');
+            let html = '';
+            data.comments.forEach(comment => {
+                let user = data.users.find(function(user) {
+                    return user.id === comment.user_id;
+                });
+                html += `<li>${user.name}: ${comment.content}</li>`
+            });
+
+            commentBlock.innerHTML = html;
+        })
+
+    
+    
     
