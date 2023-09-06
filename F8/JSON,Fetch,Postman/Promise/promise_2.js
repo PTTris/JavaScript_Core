@@ -203,54 +203,58 @@
         }
     ];
 
+    //Đầu tiên cần có hàm để lấy được nội dung comment (setTimeout() chỉ là mô phỏng việc lấy API do mạng nhanh chậm)
     function getComments() {
         return new Promise((resolve, reject) => {
-            setTimeout(function() {
+            setTimeout(function(){
                 resolve(comments);
-            },1000);
-        });
-    }
-
-    function getUsersByIds(userIds) {
-        return new Promise((resolve, reject) => {
-            let result = users.filter(function(user) {
-                return userIds.includes(user.id);
-            });
-            setTimeout(function() {
-                resolve(result);
             },1000);
         })
     }
 
+    // Khi đã mảng chứa các userIDs thì từ đó lấy tương ứng ID của mảng users
+    function getUsersByIds(userIDs) {
+        return new Promise((resolve, reject) => {
+            let result = users.filter(function(user) {
+                // Lấy ra các Id có trong mảng userIDs
+                return userIDs.includes(user.id);
+            })
+            setTimeout(function(){
+                resolve(result);
+            },1000)
+        });
+    }
 
     getComments()
-        .then(function(comments) {
-            let userIds = comments.map(function(comment) {
+        .then(function(comment) {
+            // Từ mảng comment vừa lấy được ta nhặt ra mảng mới chứa các userIDs
+            let userIDs = comment.map(function(comment) {
                 return comment.user_id;
             });
 
-            return getUsersByIds(userIds)
-                .then(function(users) {
+            return getUsersByIds(userIDs)
+                .then(function(user) {
+                    // Để hiển thị ra cả tên và comment thì dùng object để chứa
                     return {
-                        users: users,
-                        comments: comments 
+                        users: user,
+                        comments: comment
                     }
                 })
         })
 
         .then(function(data) {
             let commentBlock = document.getElementById('comment-block');
+
             let html = '';
+
             data.comments.forEach(comment => {
+                // Từ comment phải lấy ra user
                 let user = data.users.find(function(user) {
                     return user.id === comment.user_id;
                 });
+
                 html += `<li>${user.name}: ${comment.content}</li>`
             });
 
             commentBlock.innerHTML = html;
         })
-
-    
-    
-    
